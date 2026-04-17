@@ -4,6 +4,11 @@
 
 Production-quality marketing and community site for **Superteam Australia**: a clear digital home for Australian builders on Solana—events, members, ecosystem context, and a **Get Involved** onboarding path. The repo is structured for **submission review**, **design handoff**, and **future CMS integration**.
 
+## Live preview
+
+- **Production**: https://st-au.vercel.app/
+- **Preview deployments**: enabled automatically by Vercel for each commit/PR once the repo is connected.
+
 ## Challenge context
 
 The build targets a **real ecosystem product** feel: not a one-off landing page, but a site that could ship—structured content, documented design system, hash-based SPA suitable for static hosting, and a path from `data.ts` to a real backend.
@@ -97,6 +102,14 @@ For future integrations, see **`.env.example`** (Supabase, Luma collection URL, 
 - Output: static files in `dist/` after `npm run build`.
 - **Hash routing** (`#/`, `#/members`, `#/design-system`) — no server rewrite required for primary navigation.
 - Suitable for **Vercel**, **Netlify**, **Cloudflare Pages**, or any static host.
+
+### Vercel (recommended)
+
+1. On Vercel, click **New Project** → import the GitHub repo `chiace/st-au`.
+2. Framework preset: **Vite** (auto-detected).
+3. Build command: `npm run build`
+4. Output directory: `dist`
+5. Deploy — then paste the URL above under **Live preview**.
 
 ## Design system (documentation)
 
