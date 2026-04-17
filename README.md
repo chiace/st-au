@@ -25,10 +25,21 @@ The build targets a **real ecosystem product** feel: not a one-off landing page,
 
 ## Tech stack
 
-- React 18 · Vite 6 · TypeScript  
-- Tailwind CSS v4 (`@theme` in `src/styles/tailwind.css`)  
-- Motion (`motion/react`)  
-- Lucide React  
+- **Vite (root)**: React 18 · Vite 6 · TypeScript · hash routing (`#/`, `#/members`, …)
+- **Next.js (`nextjs/`)**: Next.js 16 App Router · React 19 · path routes (`/`, `/members`, `/design-system`) — full production build included
+- Tailwind CSS v4 (`@theme` in `src/styles/tailwind.css` or `nextjs/src/styles/tailwind-theme.css`)
+- Motion (`motion/react`)
+- Lucide React
+
+### Next.js (full app)
+
+```bash
+cd nextjs
+npm install
+npm run dev
+```
+
+Production: `cd nextjs && npm run build && npm start`. On **Vercel**, set the project **Root Directory** to `nextjs` (Framework: Next.js). The root Vite app can stay on the default `npm run build` → `dist` as a separate project if you want both.
 
 ## Project structure
 
