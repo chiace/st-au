@@ -133,7 +133,7 @@ const interactionRules = [
   "Hover should feel thin, precise, and quiet.",
   "Buttons need clear hierarchy: one primary, one support, one text action at most.",
   "Cards should move slightly, not jump.",
-  "Underlines and subtle borders beat heavy fills for navigation states.",
+  "Underlines and subtle borders beat heavy fills for navigation states (use white underline on dark).",
 ];
 
 const layoutRules = [
@@ -421,7 +421,7 @@ export function DesignSystemPage({
                   Navigation should feel thin, centered, and quietly premium.
                 </h2>
                 <p className="mt-5 max-w-xl text-lg leading-8 text-white/74">
-                  The site relies on a short route set, subtle underline behavior, and a single clear primary CTA.
+                  The site relies on a short route set, subtle underline behavior (white on dark), and a single clear primary CTA.
                 </p>
 
                 <div className="mt-8 rounded-full border border-white/12 bg-white/8 px-4 py-3">
@@ -519,30 +519,33 @@ export function DesignSystemPage({
                     <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/50">
                       Form language
                     </div>
+                      <p className="mt-3 max-w-xl text-sm leading-7 text-white/72">
+                        The join flow uses minimal fields: no input boxes, only label + underline.
+                      </p>
                     <div className="mt-5 grid gap-4">
-                      <label className="field-card">
-                        <span>Name</span>
-                        <input className="field-input" placeholder="Your full name" />
-                      </label>
-                      <label className="field-card">
-                        <span>Role / Area</span>
-                        <select className="field-input" defaultValue="Builder">
-                          {["Builder", "Designer", "Founder", "Creative", "Operator"].map(
-                            (option) => (
-                              <option key={option} value={option}>
-                                {option}
-                              </option>
-                            ),
-                          )}
-                        </select>
-                      </label>
-                      <label className="field-card">
-                        <span>Skills</span>
-                        <textarea
-                          className="field-input min-h-[140px] resize-none"
-                          placeholder="Rust, frontend, motion, design systems, community..."
-                        />
-                      </label>
+                        <label className="join-field">
+                          <span>Name</span>
+                          <input className="join-input" placeholder="Your full name" />
+                        </label>
+                        <label className="join-field">
+                          <span>Role / Area</span>
+                          <select className="join-input" defaultValue="Builder">
+                            {["Builder", "Designer", "Founder", "Creative", "Operator"].map(
+                              (option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              ),
+                            )}
+                          </select>
+                        </label>
+                        <label className="join-field">
+                          <span>Skills</span>
+                          <textarea
+                            className="join-input min-h-[140px]"
+                            placeholder="Rust, frontend, motion, design systems, community..."
+                          />
+                        </label>
                     </div>
                   </div>
 

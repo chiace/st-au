@@ -9,6 +9,46 @@ export default function App() {
   const [route, setRoute] = useState<Route>(getRouteFromHash);
   const [pendingSection, setPendingSection] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [cursorDown, setCursorDown] = useState(false);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    if (reduceMotion) {
+      return;
+    }
+
+    let raf = 0;
+    const handleMove = (event: MouseEvent) => {
+      const x = (event.clientX / window.innerWidth) * 100;
+      const y = (event.clientY / window.innerHeight) * 100;
+
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+      }
+
+      raf = window.requestAnimationFrame(() => {
+        document.documentElement.style.setProperty("--cursor-x", `${x.toFixed(2)}%`);
+        document.documentElement.style.setProperty("--cursor-y", `${y.toFixed(2)}%`);
+        document.documentElement.style.setProperty("--cursor-x-px", `${event.clientX}px`);
+        document.documentElement.style.setProperty("--cursor-y-px", `${event.clientY}px`);
+      });
+    };
+
+    const handleDown = () => setCursorDown(true);
+    const handleUp = () => setCursorDown(false);
+
+    window.addEventListener("mousemove", handleMove, { passive: true });
+    window.addEventListener("mousedown", handleDown, { passive: true });
+    window.addEventListener("mouseup", handleUp, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mousedown", handleDown);
+      window.removeEventListener("mouseup", handleUp);
+      if (raf) {
+        window.cancelAnimationFrame(raf);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const syncRoute = () => setRoute(getRouteFromHash());
@@ -62,7 +102,9 @@ export default function App() {
   };
 
   return (
-    <div className="site-shell dark-theme min-h-screen text-white antialiased">
+    <div className="site-shell dark-theme min-h-screen text-white antialiased cursor-hide">
+      <div className="cursor-aura" />
+      <div className="cursor-square" data-down={cursorDown ? "1" : "0"} aria-hidden="true" />
       <div className="absolute inset-x-0 top-0 -z-10 h-[620px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_36%),radial-gradient(circle_at_top_left,rgba(0,131,62,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(254,206,0,0.1),transparent_20%)]" />
 
       <Header

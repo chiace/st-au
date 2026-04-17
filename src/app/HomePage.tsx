@@ -17,6 +17,7 @@ import meetupGroup from "../assets/meetups/meetup-group.jpg";
 import meetupNetworking from "../assets/meetups/meetup-networking.jpg";
 import meetupRoom from "../assets/meetups/meetup-room.jpg";
 import meetupStage from "../assets/meetups/meetup-stage.jpg";
+import auFlag from "../assets/au-flag.svg";
 import {
   ecosystemPartners,
   events,
@@ -32,7 +33,7 @@ import {
 import { AnimatedMetric, Reveal, SectionEyebrow } from "./site-shell";
 
 const primaryButtonClass =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#0f7d43_0%,#00833E_44%,#22a35a_72%,#FECE00_100%)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_60px_rgba(0,131,62,0.28)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_72px_rgba(254,206,0,0.16)]";
+  "wow-primary inline-flex items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#0f7d43_0%,#00833E_44%,#22a35a_72%,#FECE00_100%)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_60px_rgba(0,131,62,0.28)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_72px_rgba(254,206,0,0.16)]";
 const secondaryButtonClass =
   "inline-flex items-center justify-center gap-2 rounded-full border border-white/12 px-6 py-3.5 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/5";
 const textLinkClass =
@@ -66,7 +67,7 @@ function SectionFrame({
   children: ReactNode;
 }) {
   return (
-    <Reveal id={id} className={`px-4 py-10 sm:px-6 lg:px-8 lg:py-16 ${className}`}>
+    <Reveal id={id} className={`px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-16 ${className}`}>
       <div className="mx-auto max-w-site">{children}</div>
     </Reveal>
   );
@@ -148,8 +149,30 @@ function HeroVisual() {
   ] as const;
   const [activeRhythm, setActiveRhythm] = useState<(typeof rhythmDetails)[number]["id"]>("launches");
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [dragHint, setDragHint] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
   const activeRhythmItem =
     rhythmDetails.find((item) => item.id === activeRhythm) ?? rhythmDetails[1];
+
+  const handleCycleRhythm = () => {
+    const currentIndex = rhythmDetails.findIndex((item) => item.id === activeRhythm);
+    const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % rhythmDetails.length : 0;
+    setActiveRhythm(rhythmDetails[nextIndex].id);
+  };
+
+  const handleKeyControl = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      event.preventDefault();
+      handleCycleRhythm();
+    }
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const currentIndex = rhythmDetails.findIndex((item) => item.id === activeRhythm);
+      const nextIndex =
+        currentIndex >= 0 ? (currentIndex - 1 + rhythmDetails.length) % rhythmDetails.length : 0;
+      setActiveRhythm(rhythmDetails[nextIndex].id);
+    }
+  };
 
   const handleSphereMove = (event: MouseEvent<HTMLDivElement>) => {
     if (reduceMotion) {
@@ -166,17 +189,32 @@ function HeroVisual() {
     });
   };
 
+  const handleSphereDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (reduceMotion) {
+      return;
+    }
+    setDragHint(false);
+    setIsDragging(true);
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const offsetY = (event.clientY - bounds.top) / bounds.height - 0.5;
+    setTilt({
+      rotateX: offsetY * -14,
+      rotateY: offsetX * 18,
+    });
+  };
+
   return (
     <div className="relative overflow-hidden px-2 pb-6 pt-6 sm:px-6 sm:pb-10">
       <div className="hero-grid absolute inset-x-[8%] top-0 h-[68%] opacity-24" />
       <div className="hero-noise absolute inset-0 opacity-45" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_34%),radial-gradient(circle_at_18%_26%,rgba(254,206,0,0.14),transparent_24%),radial-gradient(circle_at_82%_22%,rgba(34,163,90,0.12),transparent_22%),radial-gradient(circle_at_50%_64%,rgba(254,206,0,0.1),transparent_26%),radial-gradient(circle_at_50%_82%,rgba(0,131,62,0.14),transparent_30%)]" />
       <div className="absolute left-1/2 top-0 h-32 w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.55),rgba(255,255,255,0))]" />
-      <motion.div className="pulse-aura absolute left-1/2 top-[58%] h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(254,206,0,0.18),rgba(34,163,90,0.14)_42%,rgba(255,255,255,0.04)_64%,transparent_76%)] blur-3xl" />
+      <motion.div className="pulse-aura absolute left-1/2 top-[58%] h-[18rem] w-[18rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(254,206,0,0.18),rgba(34,163,90,0.14)_42%,rgba(255,255,255,0.04)_64%,transparent_76%)] blur-3xl sm:h-[24rem] sm:w-[24rem]" />
       <motion.div
         animate={reduceMotion ? { opacity: 0.12, scale: 1 } : { opacity: [0.15, 0.38, 0.15], scale: [0.96, 1.02, 0.96] }}
         transition={reduceMotion ? { duration: 0 } : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute left-1/2 top-[59%] h-[26rem] w-[26rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#FECE00]/6"
+        className="absolute left-1/2 top-[59%] h-[20rem] w-[20rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#FECE00]/6 sm:h-[26rem] sm:w-[26rem]"
       />
 
       <div className="relative z-10 flex flex-col items-center">
@@ -190,7 +228,7 @@ function HeroVisual() {
           </div>
         </div>
 
-        <div className="relative mt-8 flex min-h-[420px] w-full items-center justify-center sm:min-h-[500px]">
+        <div className="relative mt-8 flex min-h-[360px] w-full items-center justify-center sm:min-h-[500px]">
           <div className="absolute inset-x-[10%] top-1/2 h-px -translate-y-1/2 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent)]" />
           <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0),rgba(255,255,255,0.08))]" />
 
@@ -209,8 +247,26 @@ function HeroVisual() {
             }}
             onMouseMove={handleSphereMove}
             onMouseLeave={() => setTilt({ rotateX: 0, rotateY: 0 })}
+            onPointerDown={(event) => {
+              event.currentTarget.setPointerCapture(event.pointerId);
+              handleSphereDrag(event);
+            }}
+            onPointerMove={(event) => {
+              if (!isDragging) {
+                return;
+              }
+              handleSphereDrag(event);
+            }}
+            onPointerUp={() => {
+              setIsDragging(false);
+              setTilt({ rotateX: 0, rotateY: 0 });
+            }}
+            onPointerCancel={() => {
+              setIsDragging(false);
+              setTilt({ rotateX: 0, rotateY: 0 });
+            }}
             style={{ transformStyle: "preserve-3d" }}
-            className="relative flex h-[21rem] w-[21rem] items-center justify-center [perspective:1200px] sm:h-[25rem] sm:w-[25rem]"
+            className="relative flex h-[18rem] w-[18rem] items-center justify-center [perspective:1200px] sm:h-[21rem] sm:w-[21rem] lg:h-[25rem] lg:w-[25rem]"
           >
             <div className="absolute inset-[-2.2rem] rounded-full border border-white/6" />
             <div className="absolute inset-0 rounded-full border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.3),rgba(21,30,20,0.7)_38%,rgba(4,7,15,0.98)_72%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_140px_rgba(254,206,0,0.12)]" />
@@ -218,6 +274,14 @@ function HeroVisual() {
             <div className="absolute inset-9 rounded-full border border-[#22a35a]/22" />
             <div className="absolute inset-[4.7rem] rounded-full border border-[#FECE00]/16" />
             <div className="absolute inset-[7rem] rounded-full border border-[#FECE00]/10" />
+            <motion.div
+              aria-hidden
+              animate={reduceMotion ? { rotate: 0 } : { rotate: 360 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 12, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-[-2rem] rounded-full"
+            >
+              <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-[2px] bg-white/80 shadow-[0_0_22px_rgba(254,206,0,0.35)]" />
+            </motion.div>
             <motion.div
               animate={reduceMotion ? { opacity: 0.18 } : { opacity: [0.18, 0.34, 0.18] }}
               transition={reduceMotion ? { duration: 0 } : { duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
@@ -268,17 +332,53 @@ function HeroVisual() {
             })}
 
             <div className="absolute inset-x-12 top-[18%] h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)]" />
-            <div className="relative z-10 text-center">
+            <motion.div
+              className="relative z-10 text-center"
+              style={{ transformStyle: "preserve-3d" }}
+              animate={{ rotateX: -tilt.rotateX, rotateY: -tilt.rotateY }}
+              transition={{ type: "spring", stiffness: 140, damping: 18 }}
+            >
               <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-white/44 sm:text-[11px]">
                 Australia / Solana
               </div>
-              <div className="mt-4 text-7xl font-bold tracking-[-0.08em] text-white sm:text-8xl">
-                AU
+              <button
+                type="button"
+                onClick={handleCycleRhythm}
+                onKeyDown={handleKeyControl}
+                className="group mx-auto mt-5 flex h-20 w-20 items-center justify-center rounded-full border border-white/14 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md transition hover:border-white/24 hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-400/70 sm:h-24 sm:w-24"
+                aria-label="Cycle the weekly rhythm highlight"
+              >
+                <span className="relative flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20 sm:h-[84px] sm:w-[84px]">
+                  <img
+                    src={auFlag}
+                    alt="Australia"
+                    className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                    loading="lazy"
+                    draggable={false}
+                  />
+                  <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.22),transparent_52%)] opacity-70" />
+                </span>
+              </button>
+              <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/52 sm:text-sm">
+                {dragHint ? "Drag the globe" : "Tap to switch focus"}
               </div>
-              <div className="mt-4 text-[11px] uppercase tracking-[0.28em] text-white/58 sm:text-sm">
-                Signal. Rooms. Builders.
-              </div>
-            </div>
+
+              <AnimatePresence initial={false}>
+                {!isDragging ? (
+                  <motion.div
+                    key={activeRhythm}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    className="mx-auto mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70"
+                  >
+                    <span className={`h-1.5 w-1.5 rounded-full ${activeRhythmItem.accent}`} />
+                    {activeRhythmItem.label}
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -682,7 +782,7 @@ function EventsSection() {
               <img
                 src={featuredEvent.imageUrl}
                 alt={featuredEvent.title}
-                className="h-[380px] w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                className="h-[300px] w-full object-cover transition duration-700 group-hover:scale-[1.03] sm:h-[380px]"
                 loading="lazy"
               />
             )}
@@ -839,7 +939,7 @@ function MeetupStorySection() {
                       <img
                         src={moment.image}
                         alt={moment.imageAlt}
-                        className="h-full min-h-[320px] w-full object-cover transition duration-700 hover:scale-[1.02]"
+                        className="h-full min-h-[240px] w-full object-cover transition duration-700 hover:scale-[1.02] sm:min-h-[320px]"
                         loading="lazy"
                       />
                     </div>
@@ -848,7 +948,7 @@ function MeetupStorySection() {
                         <img
                           src={moment.sideImage}
                           alt={moment.sideAlt}
-                          className="h-[188px] w-full object-cover transition duration-700 hover:scale-[1.02]"
+                          className="h-[150px] w-full object-cover transition duration-700 hover:scale-[1.02] sm:h-[188px]"
                           loading="lazy"
                         />
                       </div>
@@ -987,6 +1087,16 @@ function MembersSection({ onViewMembers }: { onViewMembers: () => void }) {
 }
 
 function EcosystemSection() {
+  const getPartnerMark = (href: string) => {
+    try {
+      const url = new URL(href);
+      // Google S2 favicons is lightweight and stable for brand marks.
+      return `https://www.google.com/s2/favicons?sz=128&domain_url=${encodeURIComponent(url.origin)}`;
+    } catch {
+      return "";
+    }
+  };
+
   return (
     <SectionFrame id="ecosystem">
       <div className="grid gap-8">
@@ -1021,8 +1131,36 @@ function EcosystemSection() {
                   }`}
                 />
                 <div className="relative z-10">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/42">
-                    {partner.kind}
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="inline-flex items-center gap-3">
+                      <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/12 bg-white/6 shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
+                        {/* Brand mark (favicon-derived). Falls back to initials. */}
+                        {getPartnerMark(partner.href) ? (
+                          <img
+                            src={getPartnerMark(partner.href)}
+                            alt=""
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            onError={(event) => {
+                              const target = event.currentTarget;
+                              target.style.display = "none";
+                            }}
+                          />
+                        ) : null}
+                        <span className="text-[11px] font-bold text-white/75">
+                          {partner.name
+                            .split(" ")
+                            .slice(0, 2)
+                            .map((word) => word[0])
+                            .join("")
+                            .toUpperCase()}
+                        </span>
+                      </span>
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/42">
+                        {partner.kind}
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-4 text-xl font-semibold tracking-[-0.03em] text-white">
                     {partner.name}
@@ -1077,45 +1215,52 @@ function FAQSection() {
           copy="What this is, who it is for, and how to join."
         />
 
-        <div className="grid gap-3">
-          {faqs.map((item, index) => {
-            const active = openIndex === index;
+        <div className="overflow-hidden rounded-2xl border border-white/10 bg-[rgba(6,10,20,0.45)] backdrop-blur-md">
+          <ul className="divide-y divide-white/[0.08]">
+            {faqs.map((item, index) => {
+              const active = openIndex === index;
 
-            return (
-              <div
-                key={item.question}
-                className="overflow-hidden rounded-[24px] border border-white/12 bg-[linear-gradient(180deg,rgba(12,18,32,0.92),rgba(8,12,22,0.88))] shadow-[0_16px_48px_rgba(0,0,0,0.28)] backdrop-blur-md"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(active ? null : index)}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
-                >
-                  <span className="text-lg font-semibold tracking-[-0.03em] text-white">
-                    {item.question}
-                  </span>
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/6 text-white/88">
-                    {active ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                  </span>
-                </button>
-                <AnimatePresence initial={false}>
-                  {active ? (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <div className="border-t border-white/10 px-5 py-5 text-sm leading-7 text-white/82">
-                        {item.answer}
-                      </div>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+              return (
+                <li key={item.question} className="px-4 py-1.5 sm:px-6">
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(active ? null : index)}
+                    className="group flex w-full items-center justify-between gap-4 py-4 text-left"
+                  >
+                    <span className="text-base font-semibold tracking-[-0.02em] text-white sm:text-lg">
+                      {item.question}
+                    </span>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center text-white/60 transition group-hover:text-white">
+                      <span className="relative block h-4 w-4">
+                        <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
+                        <span
+                          className={`absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current transition ${
+                            active ? "opacity-0" : "opacity-100"
+                          }`}
+                        />
+                      </span>
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {active ? (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-5 pr-10 text-sm leading-7 text-white/76 sm:text-[15px]">
+                          {item.answer}
+                        </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     </SectionFrame>
