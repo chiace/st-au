@@ -12,7 +12,7 @@ import darrenPhoto from "../assets/members/darren-rogan.png";
 import salPhoto from "../assets/members/sal-samani.png";
 import kinsleighPhoto from "../assets/members/kinsleigh-j.png";
 
-export type Route = "home" | "members" | "design-system";
+export type Route = "home" | "members" | "design-system" | "privacy";
 
 export type MissionTrack = {
   title: string;
@@ -144,6 +144,9 @@ export const externalLinks = {
   telegram: "https://t.me/superteamaustralia",
   discord: "https://discord.gg/superteam",
 };
+
+/** Hash SPA — use in footer Privacy Policy link */
+export const privacyPolicyHref = "#/privacy";
 
 export const heroSnapshots: HeroSnapshot[] = [
   { label: "Sydney Launch", value: "15 Apr 2026" },

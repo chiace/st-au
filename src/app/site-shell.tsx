@@ -16,6 +16,7 @@ import {
   externalLinks,
   navItems,
   panelClass,
+  privacyPolicyHref,
   type FormState,
   type Member,
   type Route,
@@ -31,6 +32,10 @@ export function getRouteFromHash(): Route {
   const hash = window.location.hash.toLowerCase();
   if (hash.includes("/design-system")) {
     return "design-system";
+  }
+
+  if (hash.includes("/privacy")) {
+    return "privacy";
   }
 
   return hash.includes("/members") || hash === "#members" ? "members" : "home";
@@ -147,7 +152,7 @@ export function Header({
   const links =
     route === "home"
       ? [...navItems]
-      : route === "design-system"
+      : route === "design-system" || route === "privacy"
         ? [
             { label: "Home", id: "home" },
             { label: "Members", id: "members-page" },
@@ -401,11 +406,22 @@ export function Footer({
           </div>
         </div>
 
-        <div className="mt-10 flex justify-end border-t border-white/10 pt-6">
+        <div className="mt-10 flex flex-col gap-6 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-2">
+            <p className="m-0 text-xs leading-relaxed text-white/55 sm:text-sm">
+              © 2026 Superteam Australia. All rights reserved.
+            </p>
+            <a
+              href={privacyPolicyHref}
+              className="text-sm font-medium text-white/78 underline-offset-[0.22em] transition hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FECE00]/80"
+            >
+              Privacy Policy
+            </a>
+          </div>
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="group inline-flex items-center gap-2 rounded-full border border-white/12 px-4 py-2 text-sm font-semibold text-white/82 transition hover:border-white/22 hover:bg-white/6 hover:text-white"
+            className="group inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-white/12 px-4 py-2 text-sm font-semibold text-white/82 transition hover:border-white/22 hover:bg-white/6 hover:text-white sm:self-auto"
           >
             Back to top
             <ChevronUp className="h-4 w-4 transition group-hover:-translate-y-0.5" />

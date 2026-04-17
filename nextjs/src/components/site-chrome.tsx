@@ -13,6 +13,9 @@ function pathnameToRoute(pathname: string | null): Route {
   if (pathname?.startsWith("/design-system")) {
     return "design-system";
   }
+  if (pathname?.startsWith("/privacy")) {
+    return "privacy";
+  }
   return "home";
 }
 

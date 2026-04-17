@@ -13,7 +13,7 @@ export function imageSrc(src: ImportedImage | undefined): string | undefined {
   return typeof src === "string" ? src : src.src;
 }
 
-export type Route = "home" | "members" | "design-system";
+export type Route = "home" | "members" | "design-system" | "privacy";
 
 export type MissionTrack = {
   title: string;
@@ -145,6 +145,9 @@ export const externalLinks = {
   telegram: "https://t.me/superteamaustralia",
   discord: "https://discord.gg/superteam",
 };
+
+/** App Router — Privacy Policy route */
+export const privacyPolicyHref = "/privacy";
 
 export const heroSnapshots: HeroSnapshot[] = [
   { label: "Sydney Launch", value: "15 Apr 2026" },

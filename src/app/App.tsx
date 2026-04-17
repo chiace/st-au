@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { DesignSystemPage } from "./DesignSystemPage";
 import { HomePage } from "./HomePage";
 import { MembersPage } from "./MembersPage";
+import { PrivacyPolicyPage } from "./PrivacyPolicyPage";
 import { Footer, Header, OnboardingModal, getRouteFromHash } from "./site-shell";
 import { type Route } from "./data";
 
@@ -118,6 +119,8 @@ export default function App() {
         <HomePage onOpenForm={() => setFormOpen(true)} onViewMembers={navigateMembers} />
       ) : route === "members" ? (
         <MembersPage onOpenForm={() => setFormOpen(true)} onGoHome={() => navigateHome()} />
+      ) : route === "privacy" ? (
+        <PrivacyPolicyPage />
       ) : (
         <DesignSystemPage
           onGoHome={() => navigateHome()}
