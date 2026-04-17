@@ -149,7 +149,6 @@ function HeroVisual() {
   ] as const;
   const [activeRhythm, setActiveRhythm] = useState<(typeof rhythmDetails)[number]["id"]>("launches");
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
-  const [dragHint, setDragHint] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const activeRhythmItem =
     rhythmDetails.find((item) => item.id === activeRhythm) ?? rhythmDetails[1];
@@ -193,7 +192,6 @@ function HeroVisual() {
     if (reduceMotion) {
       return;
     }
-    setDragHint(false);
     setIsDragging(true);
     const bounds = event.currentTarget.getBoundingClientRect();
     const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
@@ -228,7 +226,7 @@ function HeroVisual() {
           </div>
         </div>
 
-        <div className="relative mt-8 flex min-h-[360px] w-full items-center justify-center sm:min-h-[500px]">
+        <div className="relative mt-8 flex min-h-[320px] w-full items-center justify-center sm:min-h-[500px]">
           <div className="absolute inset-x-[10%] top-1/2 h-px -translate-y-1/2 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent)]" />
           <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0),rgba(255,255,255,0.08))]" />
 
@@ -266,7 +264,7 @@ function HeroVisual() {
               setTilt({ rotateX: 0, rotateY: 0 });
             }}
             style={{ transformStyle: "preserve-3d" }}
-            className="relative flex h-[18rem] w-[18rem] items-center justify-center [perspective:1200px] sm:h-[21rem] sm:w-[21rem] lg:h-[25rem] lg:w-[25rem]"
+            className="relative flex h-[17rem] w-[17rem] touch-none items-center justify-center [perspective:1200px] sm:h-[21rem] sm:w-[21rem] lg:h-[25rem] lg:w-[25rem]"
           >
             <div className="absolute inset-[-2.2rem] rounded-full border border-white/6" />
             <div className="absolute inset-0 rounded-full border border-white/10 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.3),rgba(21,30,20,0.7)_38%,rgba(4,7,15,0.98)_72%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_140px_rgba(254,206,0,0.12)]" />
@@ -280,7 +278,7 @@ function HeroVisual() {
               transition={reduceMotion ? { duration: 0 } : { duration: 12, repeat: Infinity, ease: "linear" }}
               className="absolute inset-[-2rem] rounded-full"
             >
-              <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-[2px] bg-white/80 shadow-[0_0_22px_rgba(254,206,0,0.35)]" />
+              <span className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-[2px] bg-white/80 shadow-[0_0_22px_rgba(254,206,0,0.35)]" />
             </motion.div>
             <motion.div
               animate={reduceMotion ? { opacity: 0.18 } : { opacity: [0.18, 0.34, 0.18] }}
@@ -345,10 +343,10 @@ function HeroVisual() {
                 type="button"
                 onClick={handleCycleRhythm}
                 onKeyDown={handleKeyControl}
-                className="group mx-auto mt-5 flex h-20 w-20 items-center justify-center rounded-full border border-white/14 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md transition hover:border-white/24 hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-400/70 sm:h-24 sm:w-24"
+                className="group mx-auto mt-5 flex h-[4.25rem] w-[4.25rem] items-center justify-center rounded-full border border-white/14 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-md transition hover:border-white/24 hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FECE00]/80 sm:h-24 sm:w-24"
                 aria-label="Cycle the weekly rhythm highlight"
               >
-                <span className="relative flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20 sm:h-[84px] sm:w-[84px]">
+                <span className="relative flex h-[3.6rem] w-[3.6rem] items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20 sm:h-[84px] sm:w-[84px]">
                   <img
                     src={auFlag}
                     alt="Australia"
@@ -359,9 +357,6 @@ function HeroVisual() {
                   <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.22),transparent_52%)] opacity-70" />
                 </span>
               </button>
-              <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/52 sm:text-sm">
-                {dragHint ? "Drag the globe" : "Tap to switch focus"}
-              </div>
 
               <AnimatePresence initial={false}>
                 {!isDragging ? (
@@ -1087,10 +1082,19 @@ function MembersSection({ onViewMembers }: { onViewMembers: () => void }) {
 }
 
 function EcosystemSection() {
+  const getPartnerLogo = (href: string) => {
+    try {
+      const url = new URL(href);
+      // Clearbit logos are full wordmarks for many brands.
+      return `https://logo.clearbit.com/${url.hostname}?size=256&format=png`;
+    } catch {
+      return "";
+    }
+  };
+
   const getPartnerMark = (href: string) => {
     try {
       const url = new URL(href);
-      // Google S2 favicons is lightweight and stable for brand marks.
       return `https://www.google.com/s2/favicons?sz=128&domain_url=${encodeURIComponent(url.origin)}`;
     } catch {
       return "";
@@ -1132,10 +1136,13 @@ function EcosystemSection() {
                 />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-4">
-                    <div className="inline-flex items-center gap-3">
-                      <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/12 bg-white/6 shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
-                        {/* Brand mark (favicon-derived). Falls back to initials. */}
-                        {getPartnerMark(partner.href) ? (
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/42">
+                        {partner.kind}
+                      </div>
+
+                      <div className="mt-4 flex min-w-0 items-center gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/12 bg-white/6 shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
                           <img
                             src={getPartnerMark(partner.href)}
                             alt=""
@@ -1143,31 +1150,28 @@ function EcosystemSection() {
                             loading="lazy"
                             referrerPolicy="no-referrer"
                             onError={(event) => {
-                              const target = event.currentTarget;
-                              target.style.display = "none";
+                              event.currentTarget.style.display = "none";
                             }}
                           />
-                        ) : null}
-                        <span className="text-[11px] font-bold text-white/75">
-                          {partner.name
-                            .split(" ")
-                            .slice(0, 2)
-                            .map((word) => word[0])
-                            .join("")
-                            .toUpperCase()}
-                        </span>
-                      </span>
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/42">
-                        {partner.kind}
+                        </div>
+
+                        <div className="min-w-0">
+                          <img
+                            src={getPartnerLogo(partner.href)}
+                            alt={partner.name}
+                            className="h-7 max-w-[12rem] object-contain object-left"
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            onError={(event) => {
+                              event.currentTarget.style.display = "none";
+                            }}
+                          />
+                          <div className="sr-only">{partner.name}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="mt-4 text-xl font-semibold tracking-[-0.03em] text-white">
-                    {partner.name}
-                  </div>
-                  <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/82">
-                    Open
-                    <ArrowUpRight className="h-4 w-4 text-[#FECE00] transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+
+                    <ArrowUpRight className="h-4 w-4 shrink-0 text-[#FECE00] transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </div>
               </a>

@@ -197,7 +197,7 @@ export function MembersPage({
                       type="button"
                       aria-pressed={active}
                       onClick={() => setActiveFilter(filter)}
-                      className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400/60 ${
+                      className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FECE00]/80 ${
                         active
                           ? "bg-emerald-500/22 text-white ring-1 ring-emerald-400/35"
                           : "text-white/66 hover:bg-white/8 hover:text-white"

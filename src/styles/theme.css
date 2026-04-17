@@ -84,6 +84,16 @@ textarea {
   font: inherit;
 }
 
+::selection {
+  background: rgba(var(--au-gold-rgb), 0.95);
+  color: #07101f;
+}
+
+::-moz-selection {
+  background: rgba(var(--au-gold-rgb), 0.95);
+  color: #07101f;
+}
+
 .site-shell {
   position: relative;
   overflow-x: hidden;
