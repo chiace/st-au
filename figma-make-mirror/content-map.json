@@ -1,0 +1,108 @@
+{
+  "project": "Superteam Australia",
+  "pages": [
+    {
+      "name": "Home",
+      "sections": [
+        {
+          "id": "hero",
+          "title": "The digital home for Superteam Australia.",
+          "purpose": "Introduce the platform, explain who it serves, and drive the primary actions.",
+          "ctas": ["Get involved", "Explore opportunities", "View members"]
+        },
+        {
+          "id": "signal-strip",
+          "title": "Signal strip",
+          "purpose": "Show live cues across launches, office hours, and ecosystem activity."
+        },
+        {
+          "id": "mission",
+          "title": "A practical home for Australian builders on Solana.",
+          "purpose": "Explain what Superteam Australia is and why it exists."
+        },
+        {
+          "id": "impact",
+          "title": "Impact metrics",
+          "purpose": "Show proof across members, events, projects, bounties, and reach."
+        },
+        {
+          "id": "services",
+          "title": "How Superteam Australia helps.",
+          "purpose": "Explain support areas across founders, talent, distribution, community, and institutions."
+        },
+        {
+          "id": "events",
+          "title": "What is happening now.",
+          "purpose": "Show upcoming and past events with Luma as the source of truth."
+        },
+        {
+          "id": "members-preview",
+          "title": "People you can actually build with.",
+          "purpose": "Show featured contributors and link to the full directory."
+        },
+        {
+          "id": "ecosystem",
+          "title": "Connected to the teams that matter.",
+          "purpose": "Show partner and ecosystem adjacency, including institutional relevance."
+        },
+        {
+          "id": "community",
+          "title": "The public layer of the ecosystem.",
+          "purpose": "Show live X content, community proof, and useful link-outs."
+        },
+        {
+          "id": "faq",
+          "title": "Questions people actually ask.",
+          "purpose": "Clarify what the platform is, how to join, and how institutions engage."
+        },
+        {
+          "id": "join",
+          "title": "Get involved, stay close, and build with the ecosystem.",
+          "purpose": "Convert visitors into community participants through onboarding and channel links."
+        },
+        {
+          "id": "footer",
+          "title": "Footer",
+          "purpose": "Provide navigation, brand anchoring, and social links."
+        }
+      ]
+    },
+    {
+      "name": "Members",
+      "sections": [
+        {
+          "id": "members-hero",
+          "title": "Meet the people building across Superteam Australia.",
+          "purpose": "Set up the directory as a useful talent and collaboration surface."
+        },
+        {
+          "id": "members-filters",
+          "title": "Search and filters",
+          "purpose": "Enable skill-based discovery and quick scanning."
+        },
+        {
+          "id": "members-results",
+          "title": "Directory results",
+          "purpose": "Show responsive member cards with profile details and links."
+        }
+      ]
+    },
+    {
+      "name": "Get Involved Flow",
+      "sections": [
+        {
+          "id": "profile",
+          "fields": ["Name", "Location", "Role / Area", "Experience level"]
+        },
+        {
+          "id": "links",
+          "fields": ["Skills", "Twitter / X", "GitHub", "Portfolio or project link"]
+        },
+        {
+          "id": "intent",
+          "fields": ["What are you looking for?"]
+        }
+      ]
+    }
+  ]
+}

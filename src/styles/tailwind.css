@@ -1,0 +1,43 @@
+@import 'tailwindcss' source(none);
+@source '../**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+@theme {
+  /* Brand — mirrors `src/design-system/tokens.ts` colors */
+  --color-brand-ink: #07101f;
+  --color-brand-ink-soft: #08162b;
+  --color-brand-green: #00833e;
+  --color-brand-green-soft: #22a35a;
+  --color-brand-gold: #fece00;
+  --color-brand-gold-soft: #ffe066;
+  --color-brand-azure: #6fd3ff;
+  --color-brand-violet: #7b6dff;
+  --color-surface-light: #f8fafc;
+  --color-surface-warm: #fbf5e7;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+
+  --radius-pill: 999px;
+  --radius-card: 1.5rem;
+  --radius-panel: 1.75rem;
+  --radius-hero: 2.375rem;
+
+  --shadow-subtle: 0 10px 28px rgba(7, 18, 45, 0.04);
+  --shadow-card: 0 16px 40px rgba(8, 17, 39, 0.05);
+  --shadow-panel: 0 24px 70px rgba(3, 8, 18, 0.18);
+  --shadow-modal: 0 20px 50px rgba(15, 23, 42, 0.12);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Main content column — use `max-w-site` instead of ad hoc 1320px where refactoring */
+  --width-site: 82.5rem;
+  --width-content-narrow: 57.5rem;
+  --width-content-split: 61.25rem;
+
+  --breakpoint-content-sm: 40rem;
+  --breakpoint-content-lg: 64rem;
+  --breakpoint-content-xl: 80rem;
+}
