@@ -1166,7 +1166,9 @@ function EcosystemSection() {
                               event.currentTarget.style.display = "none";
                             }}
                           />
-                          <div className="sr-only">{partner.name}</div>
+                          <div className="mt-2 text-sm font-semibold tracking-[-0.02em] text-white/84">
+                            {partner.name}
+                          </div>
                         </div>
                       </div>
                     </div>
